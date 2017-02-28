@@ -1,0 +1,12 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+target 'MSAppModuleWebApp_Example' do
+  pod 'MSAppModuleWebApp', :path => '../'
+  pod 'commonLib', :git => 'https://github.com/yanghl/commonLib.git'
+end
+
+target 'MSAppModuleWebApp_Tests' do
+  pod 'MSAppModuleWebApp', :path => '../'
+  # pod 'commonLib', :git => 'https://github.com/yanghl/commonLib.git'
+
+end
