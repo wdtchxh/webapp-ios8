@@ -44,6 +44,8 @@ JS_EXPORT_MODULE();
     [self registerOpenPageWithBridge:bridge];
     //打开一个新的 webview
     [self registerOpenURLWithBridge:bridge];
+    //获取tocken
+    [self registerTockenWithBridge:bridge];
 
 
 }
@@ -130,6 +132,18 @@ JS_EXPORT_MODULE();
         responseCallback(@{JSResponseErrorCodeKey:@(JSResponseErrorCodeSuccess)});
     };
     [self registerHandler:@"web" handler:handler];
+}
+
+- (void)registerTockenWithBridge:(JSBridge *)bridge {
+    [self registerHandler:@"tocken" handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSUserDefaults *userDefault =[NSUserDefaults standardUserDefaults];
+        NSString *tocken = [userDefault objectForKey:@"access_token"];
+        
+        if (tocken==nil) {
+            tocken=@"";
+        }
+        responseCallback(@{JSResponseErrorCodeKey:@(JSResponseErrorCodeSuccess),@"tocken":tocken});
+    }];
 }
 
 @end

@@ -97,9 +97,11 @@
     showNotify: function (params) {
       GoodsBridge.callHandler('showNotify', params, null);
     },
-    // @params: {appurl:"emstock://"}
     canOpenURL: function (params, responseCallback) {
       GoodsBridge.callHandler('canOpenURL', params, responseCallback)
+    },
+    tocken: function (params, responseCallback) {
+    GoodsBridge.callHandler('tocken', params, responseCallback)
     },
     //用于紧急修复线上bug 需要借助JSPatch这样的插件对oc做同步修改
     installPlugin: function (plugin) {
