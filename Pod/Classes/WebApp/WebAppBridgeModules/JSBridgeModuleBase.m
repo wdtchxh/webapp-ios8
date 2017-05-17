@@ -138,11 +138,14 @@ JS_EXPORT_MODULE();
     [self registerHandler:@"tocken" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSUserDefaults *userDefault =[NSUserDefaults standardUserDefaults];
         NSString *tocken = [userDefault objectForKey:@"access_token"];
-        
+        NSString *level = [userDefault objectForKey:@"level"];
         if (tocken==nil) {
             tocken=@"";
         }
-        responseCallback(@{JSResponseErrorCodeKey:@(JSResponseErrorCodeSuccess),@"tocken":tocken});
+        if (level==nil) {
+            level=@"";
+        }
+        responseCallback(@{JSResponseErrorCodeKey:@(JSResponseErrorCodeSuccess),@"tocken":tocken,@"level":level});
     }];
 }
 
