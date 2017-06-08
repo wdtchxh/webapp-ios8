@@ -14,7 +14,7 @@
 #import <JLRoutes/JLRoutes.h>
 #import <commonLib/CommonAppSettings.h>
 #import <commonLib/BDKNotifyHUD.h>
-
+#import <commonLib/MSActiveControllerFinder.h>
 @implementation JSBridgeModuleBase
 
 @synthesize bridge = _bridge;
@@ -46,7 +46,10 @@ JS_EXPORT_MODULE();
     [self registerOpenURLWithBridge:bridge];
     //获取tocken
     [self registerTockenWithBridge:bridge];
+    //订单详情
+    [self registerOrderDetailWithBridge:bridge];
 
+    
 
 }
 
@@ -146,6 +149,30 @@ JS_EXPORT_MODULE();
             level=@"";
         }
         responseCallback(@{JSResponseErrorCodeKey:@(JSResponseErrorCodeSuccess),@"tocken":tocken,@"level":level});
+    }];
+}
+
+- (void)registerOrderDetailWithBridge:(JSBridge *)bridge {
+    [self registerHandler:@"orderDetail" handler:^(id data, WVJBResponseCallback responseCallback) {
+        UIViewController *vc = [MSActiveControllerFinder finder].activeTopController();
+        NSDictionary *dict;
+        if ([vc respondsToSelector:@selector(getOrderId)]) {
+           dict = [vc performSelector:@selector(getOrderId)];
+        }
+        
+        NSString *type=dict[@"type"];
+        NSString *orderId=dict[@"orderId"];
+        if (type==nil) {
+            type=@"";
+            orderId=@"";
+        }
+        
+        NSUserDefaults *userDefault =[NSUserDefaults standardUserDefaults];
+        NSString *tocken = [userDefault objectForKey:@"access_token"];
+        if (tocken==nil) {
+            tocken=@"";
+        }
+        responseCallback(@{JSResponseErrorCodeKey:@(JSResponseErrorCodeSuccess),@"tocken":tocken,@"type":type,@"orderId":orderId});
     }];
 }
 
